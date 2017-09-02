@@ -3,3 +3,9 @@ cache-downloads
 inspector
 api
 source/inspector.html
+
+.idea/misc.xml
+.idea/modules.xml
+.idea/webscrapingpy.iml
+.idea/workspace.xml
+examples/
