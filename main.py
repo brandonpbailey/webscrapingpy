@@ -1,15 +1,23 @@
 import urllib.request
 from urllib.error import URLError, HTTPError, ContentTooShortError
 import re
+import itertools
 
-url = 'http://meetup.com'
 
-def download(url, user_agent='wswp', num_retries=2, charset='urf-8'):
+domain = 'http://example.webscraping.com/'
+url = domain + 'places/default/sitemap.xml'
+
+def download(url, user_agent='wswp', num_retries=2, charset='utf-8'): # We had to update the character encoding to utilize regular expressions with the website response.
     print('Downloading:', url)
     request = urllib.request.Request(url)
     request.add_header('User-agent', user_agent)
     try:
-        html = urllib.request.urlopen(request).read()
+        resp = urllib.request.urlopen(request)
+        cs = resp.headers.get_content_charset()
+        print (cs)
+        if not cs:
+            cs = charset
+        html = resp.read().decode(cs)
     except (URLError, HTTPError,ContentTooShortError) as e:
         print('Download error:', e.reason)
         html = None
@@ -20,4 +28,12 @@ def download(url, user_agent='wswp', num_retries=2, charset='urf-8'):
 
     return html
 
-print(download(url))
+def crawl_sitemap(url):
+    sitemap = download(url)
+    links = re.findall('<loc>(.*?)</loc>', sitemap)
+    for link in links:
+        link = link[32:]
+        #html = download(domain + link)
+        print(domain + link)
+
+crawl_sitemap(url)
