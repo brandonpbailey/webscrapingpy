@@ -8,7 +8,6 @@ def download(url, user_agent='wswp', num_retries=2, charset='utf-8'): # We had t
     try:
         resp = urllib.request.urlopen(request)
         cs = resp.headers.get_content_charset()
-        print (cs)
         if not cs:
             cs = charset
         html = resp.read().decode(cs)
@@ -17,7 +16,6 @@ def download(url, user_agent='wswp', num_retries=2, charset='utf-8'): # We had t
         html = None
         if num_retries > 0:
             if hasattr(e, 'code') and 500 <= e.code < 600:
-                print (num_retries)
                 return download(url,num_retries - 1)
 
     return html
