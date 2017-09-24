@@ -1,9 +1,13 @@
 import crawl_site
 from link_crawler import link_crawler
+from advanced_link_crawler import download
+from lxml.html import fromstring, tostring
+import re
+import cssselect
 
 
-domain = 'http://example.webscraping.com/'
-url = domain + 'places/default/sitemap.xml'
-
-#crawl_site('http://example.webscraping.com/places/default/view/-')
-link_crawler('http://example.webscraping.com/places/default','/places/default/(index|view)/', user_agent='BadCrawler')
+url = 'http://example.webscraping.com/places/default/view/United-Kingdom-239'
+html = download(url)
+tree = fromstring(html)
+table = tree.xpath('//table')[0]
+table.getchildren()
